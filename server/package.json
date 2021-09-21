@@ -1,0 +1,8 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "Financepeer-online-test",
+  "main": "index.js",
+  "author": "Priyank Kaushik 18BCE0591",
+  "license": "MIT"
+}
