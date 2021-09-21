@@ -18,9 +18,15 @@ function App() {
       }),
     });
 
-    const data = response.json();
+    const data = await response.json();
 
-    console.log(data);
+    if (data.user) {
+      localStorage.setItem("token", data.user);
+      alert("Login successful");
+      window.location.href = "/dashboard";
+    } else {
+      alert("Please check your username and password");
+    }
   }
   return (
     <div>

@@ -19,10 +19,11 @@ function App() {
         password,
       }),
     });
+    const data = await response.json();
 
-    const data = response.json();
-
-    console.log(data);
+    if (data.status === "ok") {
+      window.location.href = "/login";
+    }
   }
   return (
     <div>
