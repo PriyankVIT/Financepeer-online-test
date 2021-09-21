@@ -1,42 +1,74 @@
-import React from "react";
+import React, { Component } from "react";
 
-const Dashboard = () => {
-  // const history = useHistory()
+import axios from "axios";
+class Dashboard extends Component {
+  state = {
+    selectedFile: null,
+  };
 
-  // async function populateQuote(){
-  //   const data = await fetch('http://localhost:5000/api/quote',{
-  //     headers:{
-  //       'x-access-token': localStorage.getItem('token'),
-  //     }
-  //   })
+  onFileChange = (event) => {
+    this.setState({ selectedFile: event.target.files[0] });
+  };
 
-  // }
+  onFileUpload = () => {
+    const formData = new FormData();
 
-  // useEffect(() => {
-  //   const token = localStorage.getItem('token')
-  //   if(token){
-  //     const user = jwt.decode(token)
-  //     if(!user){
-  //       localStorage.removeItem('token')
-  //       history.replace('/login')
-  //     } else {
-  //         populateQuote()
-  //     }
-  //   }
+    formData.append(
+      "myFile",
+      this.state.selectedFile,
+      this.state.selectedFile.name
+    );
 
-  // }, []);
-  return (
-    <div>
-      <button
-        onClick={() => {
-          localStorage.removeItem("token");
-          window.location.href = "/";
-        }}
-      >
-        Logout
-      </button>
-    </div>
-  );
-};
+    console.log(this.state.selectedFile);
+
+    axios.post("api/uploadfile", formData);
+  };
+
+  fileData = () => {
+    if (this.state.selectedFile) {
+      return (
+        <div>
+          <h2>File Details:</h2>
+
+          <p>File Name: {this.state.selectedFile.name}</p>
+
+          <p>File Type: {this.state.selectedFile.type}</p>
+
+          <p>
+            Last Modified:{" "}
+            {this.state.selectedFile.lastModifiedDate.toDateString()}
+          </p>
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          <br />
+          <h4>Choose before Pressing the Upload button</h4>
+        </div>
+      );
+    }
+  };
+
+  render() {
+    return (
+      <div>
+        <button
+          onClick={() => {
+            localStorage.removeItem("token");
+            window.location.href = "/";
+          }}
+        >
+          Logout
+        </button>
+        <div>
+          <input type="file" onChange={this.onFileChange} />
+          <button onClick={this.onFileUpload}>Upload!</button>
+        </div>
+        {this.fileData()}
+      </div>
+    );
+  }
+}
 
 export default Dashboard;
